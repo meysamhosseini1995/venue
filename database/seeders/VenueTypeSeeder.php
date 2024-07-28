@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\VenueType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class VenueTypeSeeder extends Seeder
 {
@@ -32,7 +33,11 @@ class VenueTypeSeeder extends Seeder
             "Villas / Palaces / Mansions"
         ];
         foreach ($venueTypes as $title){
-            VenueType::query()->firstOrCreate(['title' => $title]);
+            VenueType::query()->firstOrCreate([
+                'slug' => Str::slug($title)
+            ], [
+                'title' => $title,
+            ]);
         }
     }
 }

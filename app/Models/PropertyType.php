@@ -11,8 +11,14 @@ class PropertyType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title'
+        'title',
+        'slug'
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function venues(): BelongsToMany
     {

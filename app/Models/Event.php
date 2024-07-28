@@ -21,6 +21,6 @@ class Event extends Model
 
     public function eventList(): BelongsTo
     {
-        return $this->belongsTo(EventList::class, 'eventlist_id');
+        return $this->belongsTo(EventList::class, 'event_list_id');
     }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\EventList;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class EventListSeeder extends Seeder
 {
@@ -29,8 +30,12 @@ class EventListSeeder extends Seeder
             "Theaters and Performances",
             "Trainings and Workshops"
         ];
-        foreach ($eventLists as $title){
-            EventList::query()->firstOrCreate(['title' => $title]);
+        foreach ($eventLists as $title) {
+            EventList::query()->firstOrCreate([
+                'slug' => Str::slug($title)
+            ], [
+                'title' => $title,
+            ]);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\PropertyType;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class PropertyTypeSeeder extends Seeder
 {
@@ -19,7 +20,11 @@ class PropertyTypeSeeder extends Seeder
             "Luxury Venues",
         ];
         foreach ($venueTypes as $title){
-            PropertyType::query()->firstOrCreate(['title' => $title]);
+            PropertyType::query()->firstOrCreate([
+                'slug' => Str::slug($title)
+            ], [
+                'title' => $title,
+            ]);
         }
     }
 }
