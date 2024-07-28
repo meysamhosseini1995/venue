@@ -129,10 +129,10 @@
                                 <div class="card card-body">
                                     <span class="text-md-bold">Event Type:</span>
                                     <ul class="breadcrumbs">
-                                        @foreach($venue->events as $event)
+                                        @foreach($venue->eventLists as $event)
                                             <li>
-                                                <a href="{{ route('eventListPage',['eventList'=>$event->eventList->slug]) }}">
-                                                    {{ $event->eventList->title }}
+                                                <a href="{{ route('eventListPage',['eventList'=>$event->slug]) }}">
+                                                    {{ $event->title }}
                                                 </a>
                                                 @if (!$loop->last)
                                                     <span class="arrow-right">/</span>

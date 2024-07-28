@@ -53,7 +53,7 @@
     <script type="text/javascript">
         function searchList() {
             var text = '';
-            ajaxCall('/api/application/v1/venue' + window.location.search, 'GET', @json($query), function (res) {
+            ajaxCall('{{ $url }}' + window.location.search, 'GET', @json($query), function (res) {
                 if (res.data != null) {
                     $('#numberOfResult').html(res.meta.total);
                     paginate((res.meta.total / res.meta.per_page), res.meta.current_page);
@@ -100,12 +100,6 @@
             $('html, body').animate({scrollTop: $(".box-filters").offset().top},100);
             searchList();
             reModal(false)
-        }
-
-
-        function removeAllFilter() {
-            history.pushState(null, null, '/filter');
-            refreshSearchList();
         }
 
         searchList();
