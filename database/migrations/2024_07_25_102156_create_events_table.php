@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBiginteger('venue_id');
             $table->unsignedBiginteger('event_list_id');
-            $table->string('title');
-            $table->text('description');
+
             $table->foreign('venue_id')->references('id')
                 ->on('venues')->onDelete('cascade');
             $table->foreign('event_list_id')->references('id')
