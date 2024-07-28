@@ -221,20 +221,33 @@ class VenueSeeder extends Seeder
             ]);
 
             $eventLists = EventList::all()->random(random_int(1, 5));
-            foreach ($eventLists as $eventList) {
-                Event::query()->create([
-                    'venue_id' => $venue->id,
-                    'event_list_id' => $eventList->id,
-                    'title' => fake()->words(10,true),
-                    'description' => fake()->paragraph(5),
-                ]);
-            }
+            $venue->eventLists()->attach($eventLists);
+            $this->syncSort($eventLists,$venue->id);
+//            foreach ($eventLists as $eventList) {
+//                $eventList->sorts()->firstOrCreate(['venue_id' => $venue->id],['sortId'=>random_int(1,2000)]);
+//            }
 
             $propertyTypes = PropertyType::all()->random(random_int(1,2));
             $venue->propertyTypes()->attach($propertyTypes);
+            $this->syncSort($propertyTypes,$venue->id);
+//            foreach ($propertyTypes as $propertyType) {
+//                $propertyType->sorts()->firstOrCreate(['venue_id' => $venue->id],['sortId'=>random_int(1,2000)]);
+//            }
+
 
             $venueTypes = VenueType::all()->random(random_int(1, 7));
             $venue->venueTypes()->attach($venueTypes);
+            $this->syncSort($venueTypes,$venue->id);
+        }
+    }
+
+    /**
+     * @throws RandomException
+     */
+    public function syncSort($collection,$venueId): void
+    {
+        foreach ($collection as $collect) {
+            $collect->sorts()->firstOrCreate(['venue_id' => $venueId],['sortId'=>random_int(1,2000)]);
         }
     }
 }
