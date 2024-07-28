@@ -121,7 +121,7 @@
         else{
             setTimeout(function(){
                 $(".remodal-wrapper").css("display", "none");
-            }, 2000);
+            }, 500);
         }
     }
 
