@@ -36,7 +36,7 @@ abstract class Repository
      */
     public function all(array $columns = ['*'], array $relations = []): Collection
     {
-        return $this->model->with($relations)->orderBy($this->getOrderByColumn(),$this->getOrderByType())->get($this->getColumns($columns));
+        return $this->model->with($relations)->get($this->getColumns($columns));
     }
 
     /**
@@ -50,7 +50,7 @@ abstract class Repository
      */
     public function paginate(array $columns = ['*'], array $relations = []): LengthAwarePaginator
     {
-        return $this->model->with($relations)->orderBy($this->getOrderByColumn(),$this->getOrderByType())->paginate($this->getPerPage(), $this->getColumns($columns));
+        return $this->model->with($relations)->paginate($this->getPerPage());
     }
 
 
@@ -123,22 +123,12 @@ abstract class Repository
      * @param array $columns
      * @return array
      */
-    public function getColumns(array $columns): array
+    protected function getColumns(array $columns): array
     {
         return (!empty($this->selectableList[0]) && $columns[0] == '*') ? $this->selectableList : $columns;
     }
 
-    private function getOrderByColumn()
-    {
-        return request()->exists('orderByColumn') ? request()->input('orderByColumn') : 'id';
-    }
-
-    private function getOrderByType()
-    {
-        return request()->exists('orderByType') ? request()->input('orderByType') : 'DESC';
-    }
-
-    private function getPerPage()
+    protected function getPerPage()
     {
         return request()->exists('perPage') ? request()->input('perPage') : self::perPage;
     }

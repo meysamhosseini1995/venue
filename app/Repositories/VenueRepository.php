@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 use App\Models\Venue;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class VenueRepository extends Repository
 {
@@ -43,7 +44,7 @@ class VenueRepository extends Repository
         parent::filter();
         if (request()->filled('eventList') && is_array(request()->input('eventList'))) {
             $eventListIds = request()->input('eventList');
-            $this->model =  $this->model->whereHas('events', function($query) use ($eventListIds) {
+            $this->model =  $this->model->whereHas('eventLists', function($query) use ($eventListIds) {
                 $query->whereIn('event_list_id', $eventListIds);
             });
         }
@@ -60,6 +61,69 @@ class VenueRepository extends Repository
             });
         }
         return $this;
+    }
+
+
+    public function sortByEventList($eventListId): LengthAwarePaginator
+    {
+        return $this->model
+            ->leftJoin('events', 'venues.id', '=', 'events.venue_id')
+            ->leftJoin('sorts', function ($join) {
+                $join->on('venues.id', '=', 'sorts.venue_id')
+                    ->on('events.event_list_id', '=', 'sorts.sortable_id')
+                    ->where('sortable_type', '=', 'App\Models\EventList');
+            })
+            ->where('events.event_list_id', $eventListId)
+            ->orderBy('sorts.sortId','DESC')
+            ->select([
+                'venues.*',
+                'events.venue_id',
+                'events.event_list_id',
+                'sorts.sortable_type as sortBy',
+                'sorts.sortId',
+            ])->paginate($this->getPerPage());
+    }
+
+
+    public function sortByVenueType($venueTypeId): LengthAwarePaginator
+    {
+        return $this->model
+            ->leftJoin('venue_venue_type', 'venues.id', '=', 'venue_venue_type.venue_id')
+            ->leftJoin('sorts', function ($join) {
+                $join->on('venues.id', '=', 'sorts.venue_id')
+                    ->on('venue_venue_type.venue_type_id', '=', 'sorts.sortable_id')
+                    ->where('sortable_type', '=', 'App\Models\VenueType');
+            })
+            ->where('venue_venue_type.venue_type_id', $venueTypeId)
+            ->orderBy('sorts.sortId','DESC')
+            ->select([
+                'venues.*',
+                'venue_venue_type.venue_id',
+                'venue_venue_type.venue_type_id',
+                'sorts.sortable_type as sortBy',
+                'sorts.sortId',
+            ])->paginate($this->getPerPage());
+    }
+
+
+    public function sortByPropertyType($propertyTypeId): LengthAwarePaginator
+    {
+        return $this->model
+            ->leftJoin('venue_property_type', 'venues.id', '=', 'venue_property_type.venue_id')
+            ->leftJoin('sorts', function ($join) {
+                $join->on('venues.id', '=', 'sorts.venue_id')
+                    ->on('venue_property_type.property_type_id', '=', 'sorts.sortable_id')
+                    ->where('sortable_type', '=', 'App\Models\VenueType');
+            })
+            ->where('venue_property_type.property_type_id', $propertyTypeId)
+            ->orderBy('sorts.sortId','DESC')
+            ->select([
+                'venues.*',
+                'venue_property_type.venue_id',
+                'venue_property_type.property_type_id',
+                'sorts.sortable_type as sortBy',
+                'sorts.sortId',
+            ])->paginate($this->getPerPage());
     }
 
 }
