@@ -1,6 +1,6 @@
 # Venue
 
-This project was created at the request of Mr Kaveh Technology company for my testing purposes. I used last Laravel and Sail in this project to make it easily testable in an isolated Docker environment.
+This project was created at the request of Mr Kaveh for my testing purposes. I used last Laravel and Sail in this project to make it easily testable in an isolated Docker environment.
 
 First, get the project from Git
 
