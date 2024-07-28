@@ -15,7 +15,6 @@ class VenueController extends Controller
 {
     public function __construct(
         private readonly VenueRepository $venueRepository,
-        private readonly VenueTypeRepository $venueTypeRepository,
     ){}
 
 
@@ -33,15 +32,15 @@ class VenueController extends Controller
      *
      * @return View
      */
-    public function show($id)
+    public function show($id): View
     {
-        $venue = $this->venueRepository->findById($id,relations: ['events.eventList','propertyTypes','venueTypes']);
+        $venue = $this->venueRepository->findById($id,relations: ['eventLists','propertyTypes','venueTypes']);
         return view('site.show',['venue'=>$venue]);
     }
 
 
 
-    public function venueFilteredByVenueType(VenueType $venueType): View
+    public function venueFilteredByVenueType(VenueType $venueType):View
     {
         return view('site.venue-filtered-by-venue-type',['venueType'=>$venueType]);
     }

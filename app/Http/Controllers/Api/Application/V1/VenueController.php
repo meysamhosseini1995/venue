@@ -27,8 +27,43 @@ class VenueController extends Controller
      */
     public function show($id): VenueResource
     {
-        $venue = $this->venueRepository->findById($id,relations: ['events','propertyTypes','venueTypes']);
+        $venue = $this->venueRepository->findById($id,relations: ['eventLists','propertyTypes','venueTypes']);
         return new VenueResource($venue);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function getVenueWithSortByEventList($id): AnonymousResourceCollection
+    {
+        $venues = $this->venueRepository->sortByEventList($id);
+        return VenueResource::collection($venues);
+    }
+
+
+    /**
+     * @param $id
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function getVenueWithSortByVenueType($id): AnonymousResourceCollection
+    {
+        $venues = $this->venueRepository->sortByVenueType($id);
+        return VenueResource::collection($venues);
+    }
+
+
+    /**
+     * @param $id
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function getVenueWithSortByPropertyType($id): AnonymousResourceCollection
+    {
+        $venues = $this->venueRepository->sortByPropertyType($id);
+        return VenueResource::collection($venues);
     }
 
 }

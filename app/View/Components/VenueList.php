@@ -27,11 +27,13 @@ class VenueList extends Component
      */
     public function __construct(
         public VenueFilterBy $filterBy,
+        public string $url = '/api/application/v1/venue',
         public string $id = '',
         public string $title = '')
     {
         if ($filterBy != VenueFilterBy::All){
             $this->query[$filterBy->value . "[]"] = $id;
+            $this->url = $this->url .'/'.$this->id;
         }
     }
 

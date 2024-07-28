@@ -18,6 +18,9 @@ Route::group(['namespace' => 'App\Http\Controllers\Api'], function () {
 
             Route::prefix('venue')->controller(VenueController::class)->group(function () {
                 Route::get('/', 'index');
+                Route::get('/sort-by-event-list/{event_list_id}', 'getVenueWithSortByEventList');
+                Route::get('/sort-by-venue-type/{venue_type_id}', 'getVenueWithSortByVenueType');
+                Route::get('/sort-by-property-type/{property_type_id}', 'getVenueWithSortByPropertyType');
                 Route::get('/{id}', 'show');
             });
         });

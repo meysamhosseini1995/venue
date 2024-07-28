@@ -26,9 +26,10 @@ class VenueResource extends JsonResource
             'latitude'       => $this->whenHas('latitude'),
             'longitude'      => $this->whenHas('longitude'),
             'sortid'         => $this->sortid,
+            'morph_sortId'   => $this->sortId ?? null,
             'created_at'     => $this->created_at,
             'updated_at'     => $this->updated_at,
-            'events'         => EventResource::collection($this->whenLoaded('events')),
+            'events'         => EventListResource::collection($this->whenLoaded('eventLists')),
             'property_types' => PropertyTypeResource::collection($this->whenLoaded('propertyTypes')),
             'venue_types'    => VenueTypeResource::collection($this->whenLoaded('venueTypes')),
         ];
